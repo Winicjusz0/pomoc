@@ -1,2 +1,144 @@
-tekst
-tekst2
+//odczyt z pliku
+public static void odczytPoLinii(String sciezka){
+        Path pathSciezka = Paths.get(sciezka);
+        try(BufferedReader reader = Files.newBufferedReader(pathSciezka)){
+            String linia; //string do wczytania tekstu z linii       
+            while((linia = reader.readLine()) != null){
+                //co ma się wykonywać w każdej linii
+            }
+        }
+        catch(IOException e){
+            System.out.println("error");
+            System.out.println(e.getMessage());
+        }
+        return votes;
+    }
+
+
+
+//przykład odczytu z pliku
+public static List<Vote> fromCsvLine(String sciezka){
+        List<Vote> votes = new ArrayList<>();
+        Path pathSciezka = Paths.get(sciezka);
+        try(BufferedReader reader = Files.newBufferedReader(pathSciezka)){
+            reader.readLine(); //odczyt kolejnej linii
+            String linia;
+            Election election = new Election();
+            election.populateCandidates("kandydaci.txt");
+            while((linia = reader.readLine()) != null){
+                String[] dane = linia.split(","); //podział linii na części
+                Vote vote = new Vote();
+                vote.location.add(dane[2]);
+                vote.location.add(dane[1]);
+                vote.location.add(dane[0]);
+                List<Candidate> candidate = election.getCandidate();
+                vote.votesForCandidate.put(candidate.get(0), Integer.valueOf(dane[3]));
+                vote.votesForCandidate.put(candidate.get(1), Integer.valueOf(dane[4]));
+                if (dane.length > 5) {
+                    vote.votesForCandidate.put(candidate.get(2), Integer.valueOf(dane[5]));
+                    vote.votesForCandidate.put(candidate.get(3), Integer.valueOf(dane[6]));
+                    vote.votesForCandidate.put(candidate.get(4), Integer.valueOf(dane[7]));
+                    vote.votesForCandidate.put(candidate.get(5), Integer.valueOf(dane[8]));
+                    vote.votesForCandidate.put(candidate.get(6), Integer.valueOf(dane[9]));
+                    vote.votesForCandidate.put(candidate.get(7), Integer.valueOf(dane[10]));
+                    vote.votesForCandidate.put(candidate.get(8), Integer.valueOf(dane[11]));
+                    vote.votesForCandidate.put(candidate.get(9), Integer.valueOf(dane[12]));
+                    vote.votesForCandidate.put(candidate.get(10), Integer.valueOf(dane[13]));
+                }
+                votes.add(vote);
+            }
+        }
+        catch(IOException e){
+            System.out.println("error");
+            System.out.println(e.getMessage());
+        }
+        return votes;
+    }
+
+
+
+//przykład użycia for na mapie i uzyskiwania wartości dla danego klucza
+public Vote summarize(List<Vote> lista, List<String> locationList){
+        Vote vote = new Vote();
+        vote.location = locationList;
+        for (Vote vote1 : lista) {
+            for(Map.Entry<Candidate, Integer> x : vote1.votesForCandidate.entrySet()){
+                if (vote.votesForCandidate.get(x.getKey()) != null) {
+                    int suma = vote.votesForCandidate.get(x.getKey());
+                    vote.votesForCandidate.put(x.getKey(), suma + x.getValue());
+                }
+                else{
+                    vote.votesForCandidate.put(x.getKey(), x.getValue());
+                }
+            }
+        }
+        return vote;
+    }
+
+
+
+//przykład sprawdzania czy obiekty są identyczne
+if (vote.location.get(0).equals(locationList.get(0))){
+                    locationVotes.add(vote);
+                }
+
+
+//przykładowy serwer
+package server;
+//
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+//
+public class Server {
+    private ServerSocket serverSocket;
+    private List<ClientHandler> clientList = new ArrayList<>();
+    public Database database = new Database();
+//
+    public static void main(String[] args) throws IOException {
+        Server server = new Server();
+        server.listen();
+    }
+//
+    public void listen() throws IOException {
+        serverSocket = new ServerSocket(3000);
+        while(true){
+            System.out.println("Server started");
+            Socket socket = serverSocket.accept();
+            System.out.println("Client connected");
+            ClientHandler client = new ClientHandler(socket, this);
+            addClient(client);
+        }
+    }
+//
+    public void addClient(ClientHandler client){
+        clientList.add(client);
+    }
+//
+    public void removeClient(ClientHandler client){
+        clientList.remove(client);
+    }
+}
+
+
+
+//klasa z użyciem random
+import java.util.Random;
+//
+public class Losowanie {
+    int n;
+//
+    public double calculate() {
+        int wynik = 0;
+        for (int i=0; i<n; i++){ //pętla ile razy losowanie
+            Random r = new Random();
+            int randomowa = rand.nextInt(100); //losowanie od 0 do 99
+            int randomowa2 = rand.nextInt(51)+50; //losowanie od 50 do 100
+            wynik = wynik + randomowa + randomowa2;
+        }
+        wynik = wynik / n;
+        return wynik;
+    }
+}
